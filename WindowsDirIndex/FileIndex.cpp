@@ -2,6 +2,7 @@
 #include "FileIndex.h"
 #include <string>
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
@@ -9,22 +10,30 @@ using namespace std;
 CFileIndex::CFileIndex()
 {
 	m_dwTotalSize = GetDiskSize("C:\\");
+	m_pHashMap = new CHashMap(20);
 }
 
 
 CFileIndex::~CFileIndex()
 {
+	delete m_pHashMap;
 }
 
 void CFileIndex::CreateIndex(const char * szPath)
 {
-	SearchFile(szPath, false);
+	m_dwScanSize = 0;
+	SearchFile(szPath, szPath, false);
 }
 
+void CFileIndex::CompareIndex(const char * szPath)
+{
+	m_dwScanSize = 0;
+	SearchFile(szPath, szPath, true);
+}
 
 WIN32_FIND_DATAA findData;//定义一个文件查找数据结构
 
-void CFileIndex::SearchFile(const char* szPath, bool bCompare)
+void CFileIndex::SearchFile(const char* szPath, string szParentDir, bool bCompare)
 {
 	std::string szTmp(szPath);
 	if (szTmp[strlen(szTmp.c_str()) - 1] != '\\')//将目录以“\\*.*”形式结尾
@@ -54,7 +63,7 @@ void CFileIndex::SearchFile(const char* szPath, bool bCompare)
 				}
 				szFileName += (char *)findData.cFileName;
 
-				SearchFile(szFileName.c_str(), bCompare);//递归调用
+				SearchFile(szFileName.c_str(), string(findData.cFileName), bCompare);//递归调用
 			}
 		}
 		else
@@ -63,13 +72,25 @@ void CFileIndex::SearchFile(const char* szPath, bool bCompare)
 			m_dwScanSize += dwFileSize;
 			double dbScanProgress = (double)m_dwScanSize / (double)m_dwTotalSize;
 
+			printf("\b\b\b\b\b\b\b\b%.3lf%%", dbScanProgress * 100);
+
 			std::string szFileName(szPath);
 			if (szFileName[strlen(szFileName.c_str()) - 1] != '\\')
 			{
 				szFileName += "\\";
 			}
 			szFileName += (char *)findData.cFileName;
-
+			if (bCompare)
+			{
+				if (!m_pHashMap->FindFile(szParentDir, szFileName))
+				{
+					cout << "Can not find: " << szFileName << endl;
+				}
+			}
+			else
+			{
+				m_pHashMap->Add(szParentDir, szFileName);
+			}
 		}
 		if (!FindNextFileA(hFind, &findData)) break;
 	}

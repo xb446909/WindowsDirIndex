@@ -10,11 +10,21 @@ using namespace std;
 int main()
 {
 	CFileIndex fileIdx;
-	cout << "Start..." << endl;
+	cout << "Start create index..." << endl;
 	DWORD dwStart = GetTickCount();
-	fileIdx.CreateIndex("C:\\");
+	fileIdx.CreateIndex("C:\\Qt");
 	DWORD dwEnd = GetTickCount();
 
-	cout << "End, Cost: " << dwEnd - dwStart << " ms" << endl;
+	cout << "Create index end, Cost: " << dwEnd - dwStart << " ms" << endl;
+
+	cout << endl;
+
+	cout << "Start compare..." << endl;
+	dwStart = GetTickCount();
+	fileIdx.CompareIndex("C:\\Qt");
+	dwEnd = GetTickCount();
+	cout << "Compare end, Cost: " << dwEnd - dwStart << " ms" << endl;
+	cout << endl;
+	system("pause");
 }
 

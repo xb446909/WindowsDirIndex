@@ -56,21 +56,31 @@ bool CHashMap::FindFile(FileModel * pNode, string szDir, string szFileName)
 
 	while (pTemp)
 	{
-		if ((szFileName.front() != pTemp->m_szFileName.front()) || (szFileName.back() != pTemp->m_szFileName.back()))
+		//if ((szFileName.front() != pTemp->m_szFileName.front()) || (szFileName.back() != pTemp->m_szFileName.back()))
+		//{
+		//	pTemp = pTemp->m_pNext;
+		//	continue;
+		//}
+		//if (szDir.compare(pTemp->m_szDir) != 0)
+		//{
+		//	pTemp = pTemp->m_pNext;
+		//	continue;
+		//}
+
+		const char* str1 = szFileName.c_str();
+		const char* str2 = pTemp->m_szFileName.c_str();
+
+		if (strcmp(str1, str2) != 0)
 		{
 			pTemp = pTemp->m_pNext;
 			continue;
 		}
-		if (szDir.compare(pTemp->m_szDir) != 0)
-		{
-			pTemp = pTemp->m_pNext;
-			continue;
-		}
-		if (szFileName.compare(pTemp->m_szFileName) != 0)
-		{
-			pTemp = pTemp->m_pNext;
-			continue;
-		}
+
+		//if (szFileName.compare(pTemp->m_szFileName) != 0)
+		//{
+		//	pTemp = pTemp->m_pNext;
+		//	continue;
+		//}
 		return true;
 	}
 

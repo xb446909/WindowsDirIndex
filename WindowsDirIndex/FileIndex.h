@@ -10,6 +10,7 @@ public:
 	~CFileIndex();
 	void CreateIndex(const char* szPath);
 	void CompareIndex(const char* szPath);
+	void SaveXML(const char* szFile) { m_dirModel.SaveXML(szFile); }
 	void Print();
 	int m_nDirNum;
 	int m_nFileNum;

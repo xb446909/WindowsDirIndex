@@ -5,8 +5,6 @@
 #include <iostream>
 #include "FileIndex.h"
 
-#include "tinyxml2.h"
-
 using namespace std;
 
 int main()
@@ -22,8 +20,13 @@ int main()
 
 	cout << endl;
 
+	cout << "Start save..." << endl;
+	dwStart = GetTickCount();
+	fileIdx.SaveXML("D:\\123.xml");
+	dwEnd = GetTickCount();
+	cout << "Save end, Cost: " << dwEnd - dwStart << " ms" << endl;
 	//fileIdx.Print();
-
+	return 0;
 	cout << "Start compare..." << endl;
 	dwStart = GetTickCount();
 	fileIdx.CompareIndex("C:\\");

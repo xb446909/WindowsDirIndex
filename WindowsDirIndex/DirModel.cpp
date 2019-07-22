@@ -41,3 +41,39 @@ bool DirModel::FindChildFile(string szFile)
 	}
 	return false;
 }
+
+void DirModel::SaveXML(const char * szFile)
+{
+	tinyxml2::XMLDocument doc;
+	auto root = doc.NewElement("Directory");
+	root->SetAttribute("Name", m_szDir.c_str());
+	for (size_t i = 0; i < m_vecDirs.size(); i++)
+	{
+		root->InsertEndChild(m_vecDirs[i]->CreateNode(&doc));
+	}
+	for (size_t i = 0; i < m_vecFiles.size(); i++)
+	{
+		auto elem = doc.NewElement("File");
+		elem->SetAttribute("Name", m_vecFiles[i].c_str());
+		root->InsertEndChild(elem);
+	}
+	doc.InsertEndChild(root);
+	doc.SaveFile(szFile);
+}
+
+tinyxml2::XMLElement * DirModel::CreateNode(tinyxml2::XMLDocument * pDoc)
+{
+	auto root = pDoc->NewElement("Directory");
+	root->SetAttribute("Name", m_szDir.c_str());
+	for (size_t i = 0; i < m_vecDirs.size(); i++)
+	{
+		root->InsertEndChild(m_vecDirs[i]->CreateNode(pDoc));
+	}
+	for (size_t i = 0; i < m_vecFiles.size(); i++)
+	{
+		auto elem = pDoc->NewElement("File");
+		elem->SetAttribute("Name", m_vecFiles[i].c_str());
+		root->InsertEndChild(elem);
+	}
+	return root;
+}

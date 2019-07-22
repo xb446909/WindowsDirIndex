@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "tinyxml2.h"
 
 using namespace std;
 
@@ -16,6 +17,8 @@ public:
 	int Compare(string szDir) { return m_szDir.compare(szDir); }
 	DirModel* FindChildDir(string szDir);
 	bool FindChildFile(string szFile);
+	void SaveXML(const char* szFile);
+	tinyxml2::XMLElement* CreateNode(tinyxml2::XMLDocument* pDoc);
 private:
 	string m_szDir;
 	vector<string> m_vecFiles;

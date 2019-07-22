@@ -18,7 +18,9 @@ public:
 	DirModel* FindChildDir(string szDir);
 	bool FindChildFile(string szFile);
 	void SaveXML(const char* szFile);
+	void LoadXML(const char* szFile);
 	tinyxml2::XMLElement* CreateNode(tinyxml2::XMLDocument* pDoc);
+	DirModel* CreateModel(tinyxml2::XMLElement* elem);
 private:
 	string m_szDir;
 	vector<string> m_vecFiles;

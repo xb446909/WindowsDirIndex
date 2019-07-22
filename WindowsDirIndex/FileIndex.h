@@ -11,6 +11,7 @@ public:
 	void CreateIndex(const char* szPath);
 	void CompareIndex(const char* szPath);
 	void SaveXML(const char* szFile) { m_dirModel.SaveXML(szFile); }
+	void LoadXML(const char* szFile) { m_dirModel.LoadXML(szFile); }
 	void Print();
 	int m_nDirNum;
 	int m_nFileNum;

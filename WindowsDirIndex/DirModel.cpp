@@ -61,6 +61,19 @@ void DirModel::SaveXML(const char * szFile)
 	doc.SaveFile(szFile);
 }
 
+void DirModel::LoadXML(const char * szFile)
+{
+	tinyxml2::XMLDocument doc;
+	doc.LoadFile(szFile);
+	auto root = doc.RootElement();
+	m_szDir = root->Attribute("Name");
+	auto elem = root->FirstChild();
+	while (elem)
+	{
+
+	}
+}
+
 tinyxml2::XMLElement * DirModel::CreateNode(tinyxml2::XMLDocument * pDoc)
 {
 	auto root = pDoc->NewElement("Directory");
@@ -76,4 +89,9 @@ tinyxml2::XMLElement * DirModel::CreateNode(tinyxml2::XMLDocument * pDoc)
 		root->InsertEndChild(elem);
 	}
 	return root;
+}
+
+DirModel * DirModel::CreateModel(tinyxml2::XMLElement * elem)
+{
+	return nullptr;
 }

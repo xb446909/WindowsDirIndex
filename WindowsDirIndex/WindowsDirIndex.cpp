@@ -10,22 +10,26 @@ using namespace std;
 int main()
 {
 	CFileIndex fileIdx;
-	cout << "Start create index..." << endl;
-	DWORD dwStart = GetTickCount();
-	fileIdx.CreateIndex("C:\\");
-	DWORD dwEnd = GetTickCount();
+	DWORD dwStart, dwEnd;
+	//cout << "Start create index..." << endl;
+	//DWORD dwStart = GetTickCount();
+	//fileIdx.CreateIndex("C:\\");
+	//DWORD dwEnd = GetTickCount();
+	//
+	//cout << "Create index end, cost: " << dwEnd - dwStart << " ms" << endl;
+	//cout << "Total: " << fileIdx.m_nFileNum << " files" << endl;
+	//
+	//cout << endl;
+	//
+	//cout << "Start save..." << endl;
+	//dwStart = GetTickCount();
+	//fileIdx.SaveXML("D:\\123.xml");
+	//dwEnd = GetTickCount();
+	//cout << "Save end, Cost: " << dwEnd - dwStart << " ms" << endl;
 
-	cout << "Create index end, cost: " << dwEnd - dwStart << " ms" << endl;
-	cout << "Total: " << fileIdx.m_nFileNum << " files" << endl;
-
-	cout << endl;
-
-	cout << "Start save..." << endl;
-	dwStart = GetTickCount();
-	fileIdx.SaveXML("D:\\123.xml");
-	dwEnd = GetTickCount();
-	cout << "Save end, Cost: " << dwEnd - dwStart << " ms" << endl;
 	//fileIdx.Print();
+
+	fileIdx.LoadXML("D:\\123.xml");
 	return 0;
 	cout << "Start compare..." << endl;
 	dwStart = GetTickCount();

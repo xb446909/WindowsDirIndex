@@ -153,14 +153,12 @@
   <ItemGroup>
     <ClInclude Include="DirModel.h" />
     <ClInclude Include="FileIndex.h" />
-    <ClInclude Include="HashMap.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="tinyxml2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirModel.cpp" />
     <ClCompile Include="FileIndex.cpp" />
-    <ClCompile Include="HashMap.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

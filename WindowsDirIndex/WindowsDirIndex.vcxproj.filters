@@ -21,9 +21,6 @@
     <ClInclude Include="FileIndex.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="HashMap.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="DirModel.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -39,9 +36,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FileIndex.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="HashMap.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="DirModel.cpp">

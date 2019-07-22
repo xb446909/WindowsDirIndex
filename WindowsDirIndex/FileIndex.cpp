@@ -10,13 +10,13 @@ using namespace std;
 CFileIndex::CFileIndex()
 {
 	m_dwTotalSize = GetDiskSize("C:\\");
-	m_pHashMap = new CHashMap(40);
+	//m_pHashMap = new CHashMap(40);
 }
 
 
 CFileIndex::~CFileIndex()
 {
-	delete m_pHashMap;
+	//delete m_pHashMap;
 }
 
 void CFileIndex::CreateIndex(const char * szPath)
@@ -36,7 +36,7 @@ void CFileIndex::CompareIndex(const char * szPath)
 
 void CFileIndex::Print()
 {
-	m_pHashMap->Print();
+	//m_pHashMap->Print();
 }
 
 WIN32_FIND_DATAA findData;//定义一个文件查找数据结构

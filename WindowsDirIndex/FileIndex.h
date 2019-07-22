@@ -1,6 +1,6 @@
 #pragma once
 #include <Windows.h>
-#include "HashMap.h"
+//#include "HashMap.h"
 #include "DirModel.h"
 
 class CFileIndex
@@ -20,7 +20,7 @@ private:
 	DWORD m_dwTotalSize;
 	DWORD m_dwScanSize;
 	
-	CHashMap* m_pHashMap;
+	//CHashMap* m_pHashMap;
 
 	DirModel m_dirModel;
 };

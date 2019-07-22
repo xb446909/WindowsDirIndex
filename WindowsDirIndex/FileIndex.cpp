@@ -10,7 +10,7 @@ using namespace std;
 CFileIndex::CFileIndex()
 {
 	m_dwTotalSize = GetDiskSize("C:\\");
-	m_pHashMap = new CHashMap(20);
+	m_pHashMap = new CHashMap(40);
 }
 
 
@@ -21,19 +21,27 @@ CFileIndex::~CFileIndex()
 
 void CFileIndex::CreateIndex(const char * szPath)
 {
+	m_nFileNum = 0;
+	m_nDirNum = 0;
 	m_dwScanSize = 0;
-	SearchFile(szPath, szPath, false);
+	m_dirModel.SetDir(szPath);
+	SearchFile(szPath, szPath, &m_dirModel, false);
 }
 
 void CFileIndex::CompareIndex(const char * szPath)
 {
 	m_dwScanSize = 0;
-	SearchFile(szPath, szPath, true);
+	SearchFile(szPath, szPath, &m_dirModel, true);
+}
+
+void CFileIndex::Print()
+{
+	m_pHashMap->Print();
 }
 
 WIN32_FIND_DATAA findData;//定义一个文件查找数据结构
 
-void CFileIndex::SearchFile(const char* szPath, string szParentDir, bool bCompare)
+void CFileIndex::SearchFile(const char* szPath, string szParentDir, DirModel* pDirModel, bool bCompare)
 {
 	std::string szTmp(szPath);
 	if (szTmp[strlen(szTmp.c_str()) - 1] != '\\')//将目录以“\\*.*”形式结尾
@@ -44,7 +52,7 @@ void CFileIndex::SearchFile(const char* szPath, string szParentDir, bool bCompar
 	{
 		szTmp += "*.*";
 	}
-	memset(&findData, 0, sizeof(WIN32_FIND_DATA));
+	memset(&findData, 0, sizeof(WIN32_FIND_DATAA));
 	HANDLE hFind = FindFirstFileA(szTmp.c_str(), &findData);//开始查找文件
 	if (hFind == INVALID_HANDLE_VALUE) return;
 
@@ -63,7 +71,23 @@ void CFileIndex::SearchFile(const char* szPath, string szParentDir, bool bCompar
 				}
 				szFileName += (char *)findData.cFileName;
 
-				SearchFile(szFileName.c_str(), string(findData.cFileName), bCompare);//递归调用
+				DirModel* pModel = nullptr;
+
+				if (bCompare)
+				{
+					pModel = pDirModel->FindChildDir(findData.cFileName);
+					if (pModel == nullptr)
+					{
+						cout << "Cannot find directory " << szFileName << endl;
+						return;
+					}
+				}
+				else
+				{
+					pModel = new DirModel(findData.cFileName);
+					pDirModel->AddChildDir(pModel);
+				}
+				SearchFile(szFileName.c_str(), string(findData.cFileName), pModel, bCompare);//递归调用
 			}
 		}
 		else
@@ -71,8 +95,6 @@ void CFileIndex::SearchFile(const char* szPath, string szParentDir, bool bCompar
 			DWORD dwFileSize = (findData.nFileSizeHigh * (MAXDWORD + 1) + findData.nFileSizeLow) / (1024);//获取文件大小,单位为KB
 			m_dwScanSize += dwFileSize;
 			double dbScanProgress = (double)m_dwScanSize / (double)m_dwTotalSize;
-
-			printf("\b\b\b\b\b\b\b\b%.3lf%%", dbScanProgress * 100);
 
 			std::string szFileName(szPath);
 			if (szFileName[strlen(szFileName.c_str()) - 1] != '\\')
@@ -82,14 +104,21 @@ void CFileIndex::SearchFile(const char* szPath, string szParentDir, bool bCompar
 			szFileName += (char *)findData.cFileName;
 			if (bCompare)
 			{
-				if (!m_pHashMap->FindFile(szParentDir, szFileName))
+				if (!pDirModel->FindChildFile(findData.cFileName))
 				{
-					cout << "Can not find: " << szFileName << endl;
+					cout << "Cannot find file " << szFileName << endl;
 				}
+
+				//if (!m_pHashMap->FindFile(szParentDir, szFileName))
+				//{
+				//	cout << "Can not find: " << szFileName << endl;
+				//}
 			}
 			else
 			{
-				m_pHashMap->Add(szParentDir, szFileName);
+				pDirModel->AddChildFile(findData.cFileName);
+				//m_pHashMap->Add(szParentDir, szFileName);
+				m_nFileNum++;
 			}
 		}
 		if (!FindNextFileA(hFind, &findData)) break;

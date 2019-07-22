@@ -12,16 +12,19 @@ int main()
 	CFileIndex fileIdx;
 	cout << "Start create index..." << endl;
 	DWORD dwStart = GetTickCount();
-	fileIdx.CreateIndex("C:\\Qt");
+	fileIdx.CreateIndex("C:\\");
 	DWORD dwEnd = GetTickCount();
 
-	cout << "Create index end, Cost: " << dwEnd - dwStart << " ms" << endl;
+	cout << "Create index end, cost: " << dwEnd - dwStart << " ms" << endl;
+	cout << "Total: " << fileIdx.m_nFileNum << " files" << endl;
 
 	cout << endl;
 
+	//fileIdx.Print();
+
 	cout << "Start compare..." << endl;
 	dwStart = GetTickCount();
-	fileIdx.CompareIndex("C:\\Qt");
+	fileIdx.CompareIndex("C:\\");
 	dwEnd = GetTickCount();
 	cout << "Compare end, Cost: " << dwEnd - dwStart << " ms" << endl;
 	cout << endl;

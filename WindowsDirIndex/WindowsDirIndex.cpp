@@ -5,6 +5,8 @@
 #include <iostream>
 #include "FileIndex.h"
 
+#include "tinyxml2.h"
+
 using namespace std;
 
 int main()

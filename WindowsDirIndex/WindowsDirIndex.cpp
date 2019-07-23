@@ -30,7 +30,7 @@ int main()
 	//fileIdx.Print();
 
 	fileIdx.LoadXML("D:\\123.xml");
-	return 0;
+	//return 0;
 	cout << "Start compare..." << endl;
 	dwStart = GetTickCount();
 	fileIdx.CompareIndex("C:\\");

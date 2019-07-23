@@ -70,7 +70,15 @@ void DirModel::LoadXML(const char * szFile)
 	auto elem = root->FirstChild();
 	while (elem)
 	{
-
+		if (strcmp(elem->Value(), "Directory") == 0)
+		{
+			m_vecDirs.push_back(CreateModel(elem->ToElement()));
+		}
+		if (strcmp(elem->Value(), "File") == 0)
+		{
+			m_vecFiles.push_back(elem->ToElement()->Attribute("Name"));
+		}
+		elem = elem->NextSibling();
 	}
 }
 
@@ -93,5 +101,19 @@ tinyxml2::XMLElement * DirModel::CreateNode(tinyxml2::XMLDocument * pDoc)
 
 DirModel * DirModel::CreateModel(tinyxml2::XMLElement * elem)
 {
-	return nullptr;
+	DirModel* pModel = new DirModel(elem->Attribute("Name"));
+	auto child = elem->FirstChild();
+	while (child)
+	{
+		if (strcmp(child->Value(), "Directory") == 0)
+		{
+			pModel->m_vecDirs.push_back(CreateModel(child->ToElement()));
+		}
+		if (strcmp(child->Value(), "File") == 0)
+		{
+			pModel->m_vecFiles.push_back(child->ToElement()->Attribute("Name"));
+		}
+		child = child->NextSibling();
+	}
+	return pModel;
 }
